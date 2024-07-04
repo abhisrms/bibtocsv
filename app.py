@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, redirect, url_for, send_from_directory, render_template_string
 import bibtexparser
 import csv
+from waitress import serve
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'bib'}
@@ -65,4 +66,4 @@ def download_file(filename):
 if __name__ == "__main__":
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    serve(app, host='0.0.0.0', port=port)
