@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request,send_from_directory, render_template_string
+from flask import Flask, request, redirect, url_for, send_from_directory, render_template_string
 import bibtexparser
 import csv
 
@@ -10,8 +10,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def bib_to_csv(bib_filename, csv_filename):
     with open(bib_filename, 'r', encoding='utf-8') as bib_file:
@@ -65,4 +64,5 @@ def download_file(filename):
 
 if __name__ == "__main__":
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
